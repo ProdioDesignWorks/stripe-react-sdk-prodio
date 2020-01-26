@@ -9,7 +9,7 @@ application.
 
 Get started by installing with npm
 
-    npm install stripe-react-sdk-prodio
+    npm install stripe-react-sdk-prodio --save
 
 
 ### Requirements
@@ -25,15 +25,42 @@ import React from 'react'
 import StripeCheckout from 'stripe-react-sdk-prodio';
 
 export default class PaymentClass extends React.Component {
+
+  constructor(props) {
+      super(props);
+      this.state = {
+        totalAmountToPay : 89,
+        userEmail:"shashikant@prodio.in"
+      }
+  }
+
   onToken = (token) => {
-    fetch('/savePaymentTransaction', {
-      method: 'POST',
-      body: JSON.stringify(token),
-    }).then(response => {
-      response.json().then(data => {
-        console.log('Payment completed successfully.');
+    let sampleMetaData = {
+      "totalAmountToPay": this.state.totalAmountToPay,            //mandatory
+      "email": this.state.userEmail,                              //mandatory
+      "title": "Payment for services",                 //madatory - payment reference title
+      "payerId":"",                                    //madatory - from prodio payment module
+      "merchantId":"",                                 //madatory - from prodio payment module
+      "businessName":"",                                //You can add any key value pairs
+      "customKey":"customValue"
+    }
+    let sendData = {
+      "metaData": sampleMetaData,
+      "token": token
+    }
+
+    ## NOTE : If you using API_GATEWAY - then create api gateway end point and point it to the below api url.
+    //To get this URL working you need to run "Prodio-payment-services" on the server
+    //{{hostname}} is server domain or IP.
+
+    axios.post(`http://{{hostname}}:3010/api/StripeConnector/verifyStripeToken`, sendData).then(result => {
+        result.json().then(data => {
+          alert(`Payment completed successfully`);
+        });
+      }).catch(error => {
+        alert('Error while processing payment : '+JSON.stringify(error))
       });
-    });
+
   }
 
   // ...
@@ -43,7 +70,14 @@ export default class PaymentClass extends React.Component {
       // ...
       <StripeCheckout
         token={this.onToken}
-        stripeKey="my_PUBLISHABLE_stripekey"
+        stripeKey="{publish_key_from_stripe}"
+        amount={ (this.state.totalAmountToPay) * 100 } // cents
+        currency="USD"
+        email={(this.state.userEmail)}
+        name="Payment Form"
+        label="Pay" // text inside the Stripe button
+        style={{height:100,width:200,background:"#fff"}}
+        textStyle={{height:100,width:200,background:"#dddd"}}
       />
     )
   }
