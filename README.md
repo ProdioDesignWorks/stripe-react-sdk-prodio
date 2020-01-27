@@ -37,7 +37,7 @@ export default class PaymentClass extends React.Component {
   onToken = (token) => {
     let sampleMetaData = {
       "totalAmountToPay": this.state.totalAmountToPay,            //mandatory
-      "email": this.state.userEmail,                              //mandatory
+      "userEmail": this.state.userEmail,                              //mandatory
       "title": "Payment for services",                 //madatory - payment reference title
       "payerId":"",                                    //madatory - from prodio payment module
       "merchantId":"",                                 //madatory - from prodio payment module
