@@ -76,8 +76,8 @@ export default class PaymentClass extends React.Component {
         email={(this.state.userEmail)}
         name="Payment Form"
         label="Pay" // text inside the Stripe button
-        style={{height:100,width:200,background:"#fff"}}
-        textStyle={{height:100,width:200,background:"#dddd"}}
+        containerStyle={{height:100,width:200,background:"#fff"}}
+        buttonStyle={{height:100,width:200,background:"#dddd"}}
       />
     )
   }
