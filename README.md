@@ -41,6 +41,7 @@ export default class PaymentClass extends React.Component {
       "title": "Payment for services",                 //madatory - payment reference title
       "payerId":"",                                    //madatory - from prodio payment module
       "merchantId":"",                                 //madatory - from prodio payment module
+      "webhookUrl":"",      //optional - if you want to receive complete metaData in your apis
       "businessName":"",                                //You can add any key value pairs
       "customKey":"customValue"
     }
